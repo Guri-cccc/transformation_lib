@@ -273,6 +273,65 @@ geometry_msgs::Transform FastTF::ReverseTF(geometry_msgs::Transform tf_)
     return reverse_tf;
 }
 
+geometry_msgs::Quaternion FastTF::Rotate(geometry_msgs::Quaternion orientation_, geometry_msgs::Quaternion rotation_)
+{
+
+    Matrix3d tf_mat_r = Matrix3d::Zero();
+    Matrix3d pose_r_in = Matrix3d::Zero();
+    Matrix3d pose_r_out = Matrix3d::Zero();
+
+    // transformation matrix for position(4x4), for orientation (3x3)
+    tf_mat_r = Quaternion2Mat3(rotation_);
+    // orientation matrix of the pose (4x1)
+    pose_r_in = Quaternion2Mat3(orientation_);
+
+    // transformation
+    pose_r_out = tf_mat_r * pose_r_in;
+
+    return Mat32Quaternion(pose_r_out);
+}
+
+geometry_msgs::Quaternion FastTF::Rotate(geometry_msgs::Quaternion orientation_, vector<double> rotation_)
+{
+    geometry_msgs::Quaternion q_rotation;
+    conv::PoseTransform::Quaternion2Euler(rotation_[0], rotation_[1], rotation_[2],
+                        q_rotation.x, q_rotation.y, q_rotation.z, q_rotation.w);
+    Matrix3d tf_mat_r = Matrix3d::Zero();
+    Matrix3d pose_r_in = Matrix3d::Zero();
+    Matrix3d pose_r_out = Matrix3d::Zero();
+
+    // transformation matrix for position(4x4), for orientation (3x3)
+    tf_mat_r = Quaternion2Mat3(q_rotation);
+    // orientation matrix of the pose (4x1)
+    pose_r_in = Quaternion2Mat3(orientation_);
+
+    // transformation
+    pose_r_out = tf_mat_r * pose_r_in;
+
+    return Mat32Quaternion(pose_r_out);
+}
+
+geometry_msgs::Quaternion FastTF::Rotate(geometry_msgs::Quaternion orientation_, geometry_msgs::Vector3 rotation_)
+{
+    geometry_msgs::Quaternion q_rotation;
+    conv::PoseTransform::Quaternion2Euler(rotation_.x, rotation_.y, rotation_.z,
+                        q_rotation.x, q_rotation.y, q_rotation.z, q_rotation.w);
+    Matrix3d tf_mat_r = Matrix3d::Zero();
+    Matrix3d pose_r_in = Matrix3d::Zero();
+    Matrix3d pose_r_out = Matrix3d::Zero();
+
+    // transformation matrix for position(4x4), for orientation (3x3)
+    tf_mat_r = Quaternion2Mat3(q_rotation);
+    // orientation matrix of the pose (4x1)
+    pose_r_in = Quaternion2Mat3(orientation_);
+
+    // transformation
+    pose_r_out = tf_mat_r * pose_r_in;
+
+    return Mat32Quaternion(pose_r_out);
+}
+
+
 void FastTF::GetAngleDiff2Euler(geometry_msgs::Pose pose1_, geometry_msgs::Pose pose2_, geometry_msgs::Vector3 &angle_diff_){
 
     Matrix3d angle_diff_r = Matrix3d::Zero();

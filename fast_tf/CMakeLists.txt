@@ -45,4 +45,5 @@ add_dependencies(${PROJECT_NAME}_lib ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catki
 target_link_libraries(${PROJECT_NAME}_lib
  ${catkin_LIBRARIES}
  ${Eigen_LIBRARIES}
+ pose_tf_lib
 )

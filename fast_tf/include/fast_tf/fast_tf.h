@@ -13,7 +13,7 @@
 #include <tf2_ros/transform_listener.h>
 #include <tf2_msgs/TFMessage.h>
 
-// #include <pose_tf/euler2quaternion.h>
+#include <pose_tf/euler2quaternion.h>
 
 using namespace ros;
 using namespace std;
@@ -51,6 +51,10 @@ namespace ftf
         static void TFOnlyR(geometry_msgs::Wrench &wrench_, geometry_msgs::Transform tf_, bool reverse);
         static geometry_msgs::Transform ReverseTF(geometry_msgs::Transform tf_);
 
+        static geometry_msgs::Quaternion Rotate(geometry_msgs::Quaternion orientation_, geometry_msgs::Quaternion rotation_);
+        static geometry_msgs::Quaternion Rotate(geometry_msgs::Quaternion orientation_, vector<double> rotation_);
+        static geometry_msgs::Quaternion Rotate(geometry_msgs::Quaternion orientation_, geometry_msgs::Vector3 rotation_);
+
         static void GetAngleDiff2Euler(geometry_msgs::Pose pose1_, geometry_msgs::Pose pose2_, geometry_msgs::Vector3 &angle_diff_);
         static void GetAngleDiff2Quaternion(geometry_msgs::Pose pose1_, geometry_msgs::Pose pose2_, geometry_msgs::Quaternion &angle_diff_);
 
@@ -59,7 +63,6 @@ namespace ftf
         static geometry_msgs::Quaternion Mat42Quaternion(Matrix4d matrix_in);
         static geometry_msgs::Quaternion Mat32Quaternion(Matrix3d matrix_in);
         static geometry_msgs::Vector3 Mat32Euler(Matrix3d matrix_in);
-
     };
 }
 
