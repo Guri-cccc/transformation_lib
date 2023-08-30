@@ -44,11 +44,13 @@ namespace ftf
         static bool TFPoseStamped(geometry_msgs::PoseStamped &pose_, string frame_in, string frame_out, tf2_msgs::TFMessage tf_msg);
         static bool TFPoseStampedF(geometry_msgs::PoseStamped &pose_stamped_, string frame_in, string frame_out, geometry_msgs::TransformStamped transform);
 
+        static geometry_msgs::Pose RelativePose(geometry_msgs::Pose target_pose_, geometry_msgs::Pose reference_pose_);
+
         // transform geometry_msgs/Pose with geometry_msgs/Transform
-        static void TF(geometry_msgs::Pose &pose_, geometry_msgs::Transform tf_, bool reverse);
-        static void TF(geometry_msgs::Wrench &wrench_, geometry_msgs::Transform tf_, bool reverse);
-        static void TFOnlyR(geometry_msgs::Pose &pose_, geometry_msgs::Transform tf_, bool reverse);
-        static void TFOnlyR(geometry_msgs::Wrench &wrench_, geometry_msgs::Transform tf_, bool reverse);
+        static void TF(geometry_msgs::Pose &pose_, geometry_msgs::Transform tf_, bool reverse = false);
+        static void TF(geometry_msgs::Wrench &wrench_, geometry_msgs::Transform tf_, bool reverse = false);
+        static void TFOnlyR(geometry_msgs::Pose &pose_, geometry_msgs::Transform tf_, bool reverse = false);
+        static void TFOnlyR(geometry_msgs::Wrench &wrench_, geometry_msgs::Transform tf_, bool reverse = false);
         static geometry_msgs::Transform ReverseTF(geometry_msgs::Transform tf_);
 
         static geometry_msgs::Quaternion Rotate(geometry_msgs::Quaternion orientation_, geometry_msgs::Quaternion rotation_);

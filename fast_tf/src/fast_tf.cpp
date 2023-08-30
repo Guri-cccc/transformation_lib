@@ -108,6 +108,29 @@ bool FastTF::TFPoseStampedF(geometry_msgs::PoseStamped &pose_stamped_, string fr
     return tf_found;
 }
 
+geometry_msgs::Pose FastTF::RelativePose(geometry_msgs::Pose target_pose_, geometry_msgs::Pose reference_pose_)
+{
+    geometry_msgs::Pose relative_pose;
+
+    geometry_msgs::Transform tf;
+    relative_pose.position.x = target_pose_.position.x - reference_pose_.position.x;
+    relative_pose.position.y = target_pose_.position.y - reference_pose_.position.y;
+    relative_pose.position.z = target_pose_.position.z - reference_pose_.position.z;
+    tf.translation.x = 0.0;
+    tf.translation.y = 0.0;
+    tf.translation.z = 0.0;
+    tf.rotation =  reference_pose_.orientation;
+    TF(relative_pose, tf, true);
+
+    Matrix3d tar_r_mat = ftf::FastTF::Quaternion2Mat3(target_pose_.orientation);
+    Matrix3d ref_r_mat = ftf::FastTF::Quaternion2Mat3(reference_pose_.orientation);
+
+    Matrix3d manipulation_orientation = ref_r_mat.transpose() * tar_r_mat;
+    relative_pose.orientation = Mat32Quaternion(manipulation_orientation);
+
+    return relative_pose;
+}
+
 void FastTF::TF(geometry_msgs::Pose &pose_, geometry_msgs::Transform tf_, bool reverse){
 
     geometry_msgs::Transform tf = tf_;
